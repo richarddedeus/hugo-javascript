@@ -4,14 +4,13 @@ require_once("../conexao.php");
 $nome = $_POST['nome'];
 $id = $_POST['id'];
 $telefone = $_POST['telefone'];
-$whatsapp = $_POST['whatsapp'];
 $pessoa = $_POST['pessoa'];
 $cpf = $_POST['cpf'];
 $cidade = $_POST['cidade'];
 $estado = $_POST['estado'];
 
 if($id == ""){
-	$query = $pdo->prepare("INSERT INTO clientes SET nome = :nome, telefone = :telefone, whatsapp = :whatsapp, pessoa = :pessoa, cpf = :cpf, cidade = :cidade, estado = :estado");	
+	$query = $pdo->prepare("INSERT INTO clientes SET nome = :nome, telefone = :telefone, pessoa = :pessoa, cpf = :cpf, cidade = :cidade, estado = :estado");	
 }else{
 	$query = $pdo->prepare("UPDATE clientes SET nome = :nome, telefone = :telefone, pessoa = :pessoa, cpf = :cpf, cidade = :cidade, estado = :estado WHERE id = '$id'");	
 }
@@ -19,7 +18,6 @@ if($id == ""){
 
 $query->bindValue(":nome", "$nome");
 $query->bindValue(":telefone", "$telefone");
-$query->bindValue(":whatsapp", "$whatsapp");
 $query->bindValue(":pessoa", "$pessoa");
 $query->bindValue(":cpf", "$cpf");
 $query->bindValue(":cidade", "$cidade");

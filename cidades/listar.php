@@ -1,5 +1,5 @@
 <?php 
-$tabela = 'estados';
+$tabela = 'cidades';
 require_once("../conexao.php");
 
 $query = $pdo->query("SELECT * from $tabela order by id desc");
@@ -13,7 +13,8 @@ echo <<<HTML
 	<tr>
 	<th>Id</th>	
 	<th>Nome</th>
-	<th>Ativo</th>
+	<th>Estado</th>
+	<th>Ativa</th>
 	<th>Ações</th>
 	</tr> 
 	</thead> 
@@ -24,15 +25,17 @@ HTML;
 for($i=0; $i<$linhas; $i++){
 	$id = $res[$i]['id'];
 	$nome = $res[$i]['nome'];
+	$estado = $res[$i]['estado'];
 	$ativo = $res[$i]['ativo'];
 		
 echo <<<HTML
-<tr onclick="editar('{$id}', '{$nome}', '{$ativo}')">
+<tr>
 <td>{$id}</td>
 <td>{$nome}</td>
+<td>{$estado}</td>
 <td>{$ativo}</td>
 <td>
-	<a href="#" onclick="editar('{$id}', '{$nome}', '{$ativo}')"><i class="bi bi-pencil-square text-primary"></i></a>
+	<a href="#" onclick="editar('{$id}', '{$nome}', '{$estado}', '{$ativo}')"><i class="bi bi-pencil-square text-primary"></i></a>
 	<a href="#" onclick="excluir('{$id}')"><i class="bi bi-trash3 text-danger"></i></a>
 </td>
 
@@ -56,7 +59,7 @@ HTML;
 <script type="text/javascript">
 	function excluir(id){
 		$.ajax({
-	        url: pag + "/deleteState.php",
+	        url: pag + "/excluir.php",
 	        method: 'POST',
 	        data: {id},
 	        dataType: "html",
@@ -66,24 +69,26 @@ HTML;
 	            	listar();
 	            }else{
 	            	$('#mensagem').addClass('text-danger')
-                $('#mensagem').text(mensagem)
+                	$('#mensagem').text(mensagem)
 	            }        
 	        }
     	});
 	}
 
-	function editar(id, nome, ativo){
-		$('#nameState').val(nome);
+	function editar(id, nome, estado, ativo){
+		$('#nome').val(nome);
 		$('#id').val(id);
+		$('#estado').val(estado).change();
 
 		if(ativo == 'Sim'){
 			$('#ativo').prop('checked', true);
 		}else{
-			$('#inativo').prop('checked', true);
+			$('#ativo').prop('checked', false);
 		}
+		
 
-		$("#btn_saveState").text('Editar'); 
-		$("#btn_saveState").removeClass('btn-success');
-    $("#btn_saveState").addClass('btn-primary'); 
+		$("#btn_salvar").text('Editar'); 
+		$("#btn_salvar").removeClass('btn-success');
+    	$("#btn_salvar").addClass('btn-primary'); 
 	}
 </script>

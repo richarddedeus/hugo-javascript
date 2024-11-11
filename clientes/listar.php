@@ -2,7 +2,9 @@
 $tabela = 'clientes';
 require_once("../conexao.php");
 
-$query = $pdo->query("SELECT * from $tabela order by id desc");
+$busca = @$_POST['p1'];
+
+$query = $pdo->query("SELECT * from $tabela where nome LIKE '%$busca%' or telefone LIKE '%$busca%' or cpf LIKE '%$busca%' order by id desc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $linhas = @count($res);
 if($linhas > 0){
@@ -11,12 +13,10 @@ echo <<<HTML
 	<table class="table">
 	<thead> 
 	<tr>	
-	<th>ID</th>
 	<th>Nome</th>
 	<th>Telefone</th>
-	<th>whatsapp</th>
 	<th>Pessoa</th>
-	<th>CPF/CNPJ</th>
+	<th>CPF / CNPJ</th>
 	<th>Cidade</th>
 	<th>Estado</th>
 	<th>Ações</th>
@@ -30,25 +30,21 @@ for($i=0; $i<$linhas; $i++){
 	$id = $res[$i]['id'];
 	$nome = $res[$i]['nome'];
 	$telefone = $res[$i]['telefone'];
-	$whatsapp = $res[$i]['whatsapp'];
 	$pessoa = $res[$i]['pessoa'];
 	$cpf = $res[$i]['cpf'];
-	$cidade = $res[$i]['cidade'];
+	$cidade = $res[$i]['cidade'];	
 	$estado = $res[$i]['estado'];
-	
 		
 echo <<<HTML
-<tr onclick="editar('{$id}', '{$nome}', '{$telefone}', '{$whatsapp}', '{$pessoa}', '{$cpf}', '{$cidade}', '{$estado}')">
-<td>{$id}</td>
+<tr>
 <td>{$nome}</td>
 <td>{$telefone}</td>
-<td>{$whatsapp}</td>
 <td>{$pessoa}</td>
 <td>{$cpf}</td>
 <td>{$cidade}</td>
 <td>{$estado}</td>
 <td>
-	<a href="#" onclick="editar('{$id}', '{$nome}', '{$telefone}', '{$whatsapp}', '{$pessoa}', '{$cpf}', '{$cidade}', '{$estado}')"><i class="bi bi-pencil-square text-primary"></i></a>
+	<a href="#" onclick="editar('{$id}', '{$nome}', '{$telefone}', '{$pessoa}', '{$cpf}', '{$cidade}', '{$estado}')"><i class="bi bi-pencil-square text-primary"></i></a>
 	<a href="#" onclick="excluir('{$id}')"><i class="bi bi-trash3 text-danger"></i></a>
 </td>
 
@@ -72,7 +68,7 @@ HTML;
 <script type="text/javascript">
 	function excluir(id){
 		$.ajax({
-	        url: pag + "/deleteclient.php",
+	        url: pag + "/excluir.php",
 	        method: 'POST',
 	        data: {id},
 	        dataType: "html",
@@ -82,32 +78,27 @@ HTML;
 	            	listar();
 	            }else{
 	            	$('#mensagem').addClass('text-danger')
-                $('#mensagem').text(mensagem)
+                	$('#mensagem').text(mensagem)
 	            }        
 	        }
     	});
 	}
 
-	function editar(id, nome, telefone, whatsapp, pessoa, cpf, cidade, estado){
-		$('#nameCity').val(nome);
-		$('#id').val(id);
+	function editar(id, nome, telefone, pessoa, cpf, cidade, estado){
 		$('#nome').val(nome);
+		$('#id').val(id);
 		$('#telefone').val(telefone);
-
-		if(whatsapp == 'Sim'){
-			$('#ativo').prop('checked', true);
-		}else{
-			$('#inativo').prop('checked', true);
-		}
-
 		$('#pessoa').val(pessoa).change();
-		$('#cpf').val(cpf);
-		$('#nameCity').val(cidade).change();
-		$('#nameState').val(estado).change();
+		$('#cpf').val(cpf);		
+		$('#estado').val(estado).change();
+		
 
+		setTimeout(function() {
+		  $('#cidade').val(cidade).change();
+		}, 400)
 
 		$("#btn_salvar").text('Editar'); 
 		$("#btn_salvar").removeClass('btn-success');
-		$("#btn_salvar").addClass('btn-primary'); 
+    	$("#btn_salvar").addClass('btn-primary'); 
 	}
 </script>
