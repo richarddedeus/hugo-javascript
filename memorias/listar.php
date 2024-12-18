@@ -15,6 +15,7 @@ echo <<<HTML
 	<th>Evento</th>
 	<th>Data</th>
 	<th>Tempo Passado</th>
+	<th>Data Final ou Ativo</th>
 	<th>Ações</th>
 	</tr> 
 	</thead> 
@@ -26,13 +27,19 @@ for($i=0; $i<$linhas; $i++){
 	$id = $res[$i]['id'];
 	$evento = $res[$i]['evento'];
 	$data = $res[$i]['data'];
-	// Formata a data para exibir no formato d/m/Y
+	$dataFinal = $res[$i]['datafinal'];
+	
+	// Formata as datas para exibir no formato d/m/Y
 	$dataParaExibir = date("d/m/Y", strtotime($data));
-    
+	$dataFinalParaExibir = $dataFinal ? date("d/m/Y", strtotime($dataFinal)) : "ativo";
+   
+	// Define a data de referência para o cálculo
+	$dataReferencia = $dataFinal ? new DateTime($dataFinal) : new DateTime(); // Se existir $dataFinal, usa ela; caso contrário, usa a data atual
+	
 	// Calcula o tempo passado
 	$dataEvento = new DateTime($data);
-	$dataAtual = new DateTime(); // Data atual
-	$diferenca = $dataAtual->diff($dataEvento);
+	
+	$diferenca = $dataReferencia->diff($dataEvento);
 
 	// Constrói a string de tempo decorrido
 	$tempoPassado = [];
@@ -54,12 +61,15 @@ for($i=0; $i<$linhas; $i++){
 			$tempoPassado = implode(", ", $tempoPassado);
 	}
 
+
+
 echo <<<HTML
 <tr>
 <td>{$id}</td>
 <td>{$evento}</td>
 <td>{$dataParaExibir}</td>
 <td>{$tempoPassado}</td>
+<td>{$dataFinalParaExibir}</td>
 <td>
 	<a href="#" onclick="editar('{$id}', '{$evento}', '{$data}')"><i class="bi bi-pencil-square text-primary"></i></a>
 	<a href="#" onclick="excluir('{$id}')"><i class="bi bi-trash3 text-danger"></i></a>

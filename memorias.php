@@ -12,7 +12,11 @@ $pag = 'memorias';
 			</div>
 
             <div class="col-md-2">      
-            <input type="date" class="form-control" id="data" name="data" value="1902-07-21"> 
+            <input type="date" class="form-control" id="data" name="data" value=""> 
+            </div>
+            
+            <div class="col-md-2">      
+            <input type="date" class="form-control" id="datafinal" name="datafinal" value=""> 
             </div>
 
             
@@ -104,7 +108,9 @@ $("#form").submit(function () {
 
 
 function limparCampos(){
-    $("#ento").val('');  
+    $("#evento").val('');
+    $("#data").val('');
+    $("#datafinal").val('');
     $("#id").val(''); 
     $("#btn_salvar").text('Salvar'); 
     $("#btn_salvar").addClass('btn-success'); 

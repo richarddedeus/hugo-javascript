@@ -6,10 +6,9 @@ $pag = 'estados';
 <div class="container" style="background: #f5f2f2; padding:10px">
 	<form id="form">
        <div class="row">
-
-         <div class="col-md-2"> 	    
-            <input type="text" class="form-control" id="nome" name="nome" placeholder="Sigla" required>
-        </div>
+            <div class="col-md-2"> 	    
+                <input type="text" class="form-control" id="nome" name="nome" placeholder="Sigla" required>
+            </div>
 
         <div class="col-md-2">     
             <div class="form-check">
@@ -26,9 +25,9 @@ $pag = 'estados';
     </div>
 </div>
 
-<div class="col-md-2"> 	    
-    <button id="btn_salvar" type="submit" class="btn btn-success">Salvar</button>
-</div>
+    <div class="col-md-2"> 	    
+        <button id="btn_salvar" type="submit" class="btn btn-success">Salvar</button>
+        </div>
 
 <div class="col-md-6"> 	    
     <div id="mensagem"></div>
@@ -39,9 +38,7 @@ $pag = 'estados';
 </div>
 </form>
 
-<div id="listar" style="margin-top: 20px">
-
-</div>
+    <div id="listar" style="margin-top: 20px"></div>
 
 
 </div>
@@ -53,7 +50,7 @@ $pag = 'estados';
     $(document).ready( function () {	
        listar();
        limparCampos();
-   });
+    });
 
     $("#form").submit(function () {
 
